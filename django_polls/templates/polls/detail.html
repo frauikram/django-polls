@@ -1,0 +1,49 @@
+<!--
+    The template system uses dot-lookup syntax to access variable attributes.
+     In the example of {{ question.question_text }}, first Django does a dictionary lookup on the object question. 
+     Failing that, it tries an attribute lookup – which works, in this case. If attribute lookup had failed, 
+     it would’ve tried a list-index lookup.
+
+-->
+
+
+<!-- <h1>{{ question.question_text }}</h1>
+<ul>
+{% for choice in question.choice_set.all %}
+    <li>{{ choice.choice_text }}</li>
+{% endfor %}
+</ul> -->
+{% load static %}
+<link rel="stylesheet" href="{% block stylesheet %}{% static "admin/css/base.css" %}{% endblock %}">
+<header id="header">
+    <div id="branding">
+        <div id="site-name"><a href="/polls/">Polls Home</a></div>
+    </div>
+    <div id="user-tools">   
+        {% block welcome-msg %}
+            Welcome,<strong>{% firstof user.get_short_name user.get_username %}</strong>.
+        <!-- <a href="/admin/password_change/">Change password</a> / -->
+        <form id="logout-form" method="post" action="/admin/logout/">
+            <input type="hidden" name="csrfmiddlewaretoken" value="jcsjNBT9hEDwrVuinNFtKHgycCfEpeU0cJlAGcIVUBMSLtMVZrtpfvTzy9ohgYPA">
+            <button type="submit">Log out</button>
+        </form> 
+        {% endblock %}          
+    </div>    
+</header>
+
+<br/>
+
+<!-- <a href="{% url 'polls:index' %}">Home</a> -->
+
+<form action="{% url 'polls:vote' question.id %}" method="post">
+    {% csrf_token %}
+    <fieldset>
+        <legend><h1>{{ question.question_text }}</h1></legend>
+        {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+        {% for choice in question.choice_set.all %}
+            <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
+            <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
+        {% endfor %}
+    </fieldset>
+    <input type="submit" value="Vote">
+</form>

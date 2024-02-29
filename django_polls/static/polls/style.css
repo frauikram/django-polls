@@ -1,0 +1,29 @@
+/* body {
+    background: white  url("images/background.png") no-repeat; }
+*/
+li a {
+    color: green;
+}
+#header {
+    width: auto;
+    height: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 30px;
+    background: var(--header-bg);
+    color: var(--header-color);
+}
+
+#summary {
+    padding: 10 10 0 20;
+    margin: 10;
+    margin-inline-end: 20px;
+    font-weight: 350;
+    font-size: 1.5rem;
+    /* color: var(--header-branding-color); */
+     /* user defined */
+    color: #d0c82d; 
+     /* color: #417690; */
+
+}

@@ -1,0 +1,55 @@
+{% load static %}
+<link rel="stylesheet" href="{% block stylesheet %}{% static "admin/css/base.css" %}{% endblock %}">
+<link rel="stylesheet" href="{% static 'polls/style.css' %}">
+<!-- <img src="{% static 'polls/images/icon.jpg' %}" alt="My image">     -->
+
+<header id="header">
+    <div id="branding">
+        <div id="site-name"><a href="/polls/">Polls Home</a></div>
+    </div>
+    <div id="user-tools">   
+        {% block welcome-msg %}
+            Welcome,<strong>{% firstof user.get_short_name user.get_username %}</strong>.
+        <!-- <a href="/admin/password_change/">Change password</a> / -->
+        <form id="logout-form" method="post" action="/admin/logout/">
+            <input type="hidden" name="csrfmiddlewaretoken" value="jcsjNBT9hEDwrVuinNFtKHgycCfEpeU0cJlAGcIVUBMSLtMVZrtpfvTzy9ohgYPA">
+            <button type="submit">Log out</button>
+        </form> 
+        {% endblock %}          
+    </div>    
+</header>
+
+<br/>
+
+    
+{% if latest_question_list %}
+    <ul>
+    {% for question in latest_question_list %}
+        <li><a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No polls are available.</p>
+{% endif %}
+
+
+<h3 id="summary">Summary</h3>
+
+{% if latest_question_list %}
+    <ul>
+    {% for question in latest_question_list %}
+        <li>
+            {{ question.question_text }}
+            <!-- <h3>{{ question.question_text }}</h3> -->
+        </li>
+        <ul>
+            {% for choice in question.choice_set.all %}
+                <li>{{ choice.choice_text }} -- {{ choice.votes }} vote{{ choice.votes|pluralize }}</li>
+            {% endfor %}
+            </ul>
+    {% endfor %}
+    </ul>
+{% else %}
+{% endif %}
+
+<!--# challenge : create a results summary -->
